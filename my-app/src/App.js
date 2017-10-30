@@ -25,6 +25,8 @@ class App extends Component {
 
   componentDidMount = () => {
     database.ref('name').once('value')
+    .then(data => this.setState({name: data.val()} )
+      )
   }
 
   click = () => {
