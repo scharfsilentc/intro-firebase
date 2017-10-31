@@ -26,15 +26,16 @@ class App extends Component {
     database.ref('names').on('child_added',
     data => {
       let d = data.val();
-      for (var x in d) {
-        this.setState(st => ({names: st.names.concat(d[x])}))
+       {this.setState(st => ({names: st.names.concat(d)}))
       }
     })
   }  
     
  //database.ref('/someref').push().set({my: "information"}) 
-  click = () => {
+  click = (e) => {
+    e.preventDefault();
     database.ref('names').push().set(this.input.value);
+    this.input.value = '';
   }
 
   stringToDiv = (string) => {
@@ -46,7 +47,7 @@ class App extends Component {
       <div className="App">
         <h1>what's your name?</h1>
         <input ref={r => this.input = r}/>
-        <button onClick={this.click}>save</button>
+        <button type="submit" onClick={this.click}>save</button>
 
         {this.state.names ?
           (<div>{this.state.names.map(this.stringToDiv)}</div>) : 
