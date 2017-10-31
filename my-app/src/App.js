@@ -14,7 +14,6 @@ var config = {
 };
 
 firebase.initializeApp(config);
-
 const database = firebase.database();
 
 class App extends Component {
@@ -24,13 +23,13 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    database.ref('name').once('value')
-    .then(data => this.setState({name:data.val()})
+    database.ref('name').on('value',
+      data =>  this.setState({name: data.val()})
     )
   }
  //database.ref('/someref').push().set({my: "information"}) 
   click = () => {
-    database.ref('name').push().set(this.input.value);
+    database.ref('name').set(this.input.value);
   
   }
 
@@ -52,3 +51,10 @@ class App extends Component {
   }
 }
 export default App;
+
+/*
+
+Create a new react app.
+
+Make a page that asks a person for their name. A list of names from all previous visitors is displayed.
+*/
