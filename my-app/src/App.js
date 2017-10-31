@@ -19,18 +19,26 @@ const database = firebase.database();
 class App extends Component {
   constructor() {
     super();
-    this.state = {name: []}
+    this.state = {names: []}
   }
 
   componentDidMount = () => {
-    database.ref('name').on('value',
-      data =>  this.setState({name: data.val()})
-    )
-  }
+    database.ref('names').on('child_added',
+    data => {
+      let d = data.val();
+      for (var x in d) {
+        this.setState(st => ({names: st.names.concat(d[x])}))
+      }
+    })
+  }  
+    
  //database.ref('/someref').push().set({my: "information"}) 
   click = () => {
-    database.ref('name').set(this.input.value);
-  
+    database.ref('names').push().set(this.input.value);
+  }
+
+  stringToDiv = (string) => {
+    return (<div>{string}</div>)
   }
 
   render() {
@@ -40,8 +48,8 @@ class App extends Component {
         <input ref={r => this.input = r}/>
         <button onClick={this.click}>save</button>
 
-        {this.state.name ?
-          (<div>{this.state.name}</div>) : 
+        {this.state.names ?
+          (<div>{this.state.names.map(this.stringToDiv)}</div>) : 
           (<div>no names yet</div>)
         }
 
@@ -57,4 +65,19 @@ export default App;
 Create a new react app.
 
 Make a page that asks a person for their name. A list of names from all previous visitors is displayed.
+
+('value',
+      data =>  this.setState({name: data.val()})
+    )
+  }
+
+  componentDidMount(){
+    database.ref(‘name’).once OR ON(‘value’)
+      .then(data => {
+      let d = data.val ();
+    for(var x in d) {
+    this.setState(st => ({names: st.names.concat(d[x]) }))
+    }
+    })
+    }
 */
